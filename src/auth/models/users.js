@@ -20,7 +20,7 @@ const userSchema = (sequelize, DataTypes) => {
   });
 
   model.beforeCreate(async (user) => {
-    let hashedPass = bcrypt.hash(user.password, 10);
+    let hashedPass =  await bcrypt.hash(user.password, 10);
     user.password = hashedPass;
   });
 
