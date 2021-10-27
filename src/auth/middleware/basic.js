@@ -1,7 +1,6 @@
 'use strict';
 
 const base64 = require('base-64');
-const { response } = require('express');
 const { user } = require('../models/index.js')
 
 
@@ -19,7 +18,6 @@ async function basicAuth(req, res, next) {
     res.status(403).send('Invalid login');
   }
 }
-
 
 // module.exports = async (req, res, next) => {
 
