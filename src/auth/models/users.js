@@ -3,7 +3,6 @@
 const bcrypt = require('bcrypt');
 //adding in json webtoken
 const jwt = require('jsonwebtoken');
-
 const SECRET = process.env.SECRET || 'secretstringfortesting';
 
 const userSchema = (sequelize, DataTypes) => {
@@ -20,17 +19,14 @@ const userSchema = (sequelize, DataTypes) => {
   });
 
   model.beforeCreate(async (user) => {
-    let hashedPass = bcrypt.hash(user.password, 10);
+    let hashedPass =  await bcrypt.hash(user.password, 10);
     user.password = hashedPass;
   });
 
   // Basic AUTH: Validating strings (username, password) 
   model.authenticateBasic = async function (username, password) {
-    console.log(username, password, 'THIS IS USERNAME AND PASSWORD');
 
-    const user = await this.findOne({ username })
-    console.log(user, 'THIS IS USER')
-
+    const user = await this.findOne({where: { username }});
     const valid = await bcrypt.compare(password, user.password)
     if (valid) { return user; }
     throw new Error('Invalid User');
@@ -40,7 +36,6 @@ const userSchema = (sequelize, DataTypes) => {
   model.authenticateToken = async function (token) {
     try {
       const parsedToken = jwt.verify(token, SECRET);
-
       //adds in await for async function
       const user = await this.findOne({ where: { username: parsedToken.username }});
       if (user) { return user; }
