@@ -14,8 +14,12 @@ Any user that has successfully logged in using basic authentication (username an
 
 ***
 
-## UML
-
-***
-
 ## Routes
+
+- **/signup**
+
+- **/signin**
+
+- **/users**
+
+- **/secret**
