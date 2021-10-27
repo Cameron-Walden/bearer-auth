@@ -5,7 +5,9 @@ const { users } = require('../models/index.js')
 
 module.exports = async (req, res, next) => {
 
-  if (!req.headers.authorization) { return _authError(); }
+  if (!req.headers.authorization) {
+     next('AUTH ERROR');
+    }
 
   let basic = req.headers.authorization.split(' ');
   let encodedString = basic.pop();
