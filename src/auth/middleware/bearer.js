@@ -2,7 +2,6 @@
 
 const { users } = require('../models/index.js');
 
-
 async function bearerAuth(req, res, next) {
   try {
         if (!req.headers.authorization) { next('Invalid Login') }
