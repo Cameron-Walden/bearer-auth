@@ -2,8 +2,8 @@
 
 process.env.SECRET = "toes";
 
-const middleware = require('../../../src/auth/middleware/bearer.js');
-const { db, users } = require('../../../src/auth/models/index.js');
+const middleware = require('../src/auth/middleware/bearer.js');
+const { db, users } = require('../src/auth/models/index.js');
 const jwt = require('jsonwebtoken')
 
 let userInfo = {
@@ -11,14 +11,12 @@ let userInfo = {
 };
 
 // Pre-load our database with fake users
-beforeAll(async (done) => {
+beforeAll(async () => {
   await db.sync();
   await users.create(userInfo.admin);
-  done();
 });
-afterAll(async (done) => {
+afterAll(async () => {
   await db.drop();
-  done();
 });
 
 describe('Auth Middleware', () => {
@@ -33,7 +31,7 @@ describe('Auth Middleware', () => {
 
   describe('user authentication', () => {
 
-    it('fails a login for a user (admin) with an incorrect token', () => {
+    it('fails a login for a user (admin) with an incorrect token', /*async*/ () => {
 
       req.headers = {
         authorization: 'Bearer thisisabadtoken',
@@ -44,7 +42,6 @@ describe('Auth Middleware', () => {
           expect(next).not.toHaveBeenCalled();
           expect(res.status).toHaveBeenCalledWith(403);
         });
-
     });
 
     it('logs in a user with a proper token', () => {
@@ -60,9 +57,6 @@ describe('Auth Middleware', () => {
         .then(() => {
           expect(next).toHaveBeenCalledWith();
         });
-
     });
-
   });
-
 });
