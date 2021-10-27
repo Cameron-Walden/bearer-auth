@@ -28,7 +28,7 @@ const userSchema = (sequelize, DataTypes) => {
   model.authenticateBasic = async function (username, password) {
     console.log(username, password, 'THIS IS USERNAME AND PASSWORD');
 
-    const user = await this.findOne({ username })
+    const user = await this.findOne({where: { username }});
     console.log(user, 'THIS IS USER')
 
     const valid = await bcrypt.compare(password, user.password)
